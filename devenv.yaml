@@ -1,0 +1,4 @@
+allowUnfree: true
+inputs:
+  nixpkgs:
+    url: github:nixos/nixpkgs?rev=daf4db17a77ecf626e988f94c364a8169dd09732
