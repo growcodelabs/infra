@@ -1,7 +1,7 @@
 { pkgs, lib, config, inputs, ... }:
 
 {
-  packages = with pkgs; [ git opentofu postgresql_18 doctl ];
+  packages = with pkgs; [ git opentofu postgresql_18 doctl argocd ];
 
   languages.opentofu = {
     enable     = true;
