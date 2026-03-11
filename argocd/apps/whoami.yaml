@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/growcodelabs/infra.git
     targetRevision: main
-    path: workloads/whoami
+    path: argocd/workloads/whoami
   destination:
     server: https://kubernetes.default.svc
     namespace: whoami
