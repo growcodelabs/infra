@@ -17,6 +17,9 @@ spec:
     - repoURL: https://github.com/growcodelabs/infra.git
       targetRevision: main
       ref: values
+    - repoURL: https://github.com/growcodelabs/infra.git
+      targetRevision: main
+      path: manifests/infra/cert-manager
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
