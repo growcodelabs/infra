@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/growcodelabs/infra.git
     targetRevision: HEAD
-    path: argocd/projects
+    path: argocd
     directory:
       recurse: true
   destination:

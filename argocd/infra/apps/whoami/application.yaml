@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/growcodelabs/infra.git
     targetRevision: HEAD
-    path: argocd/manifests/infra/apps/whoami
+    path: manifests/infra/whoami
   destination:
     server: https://kubernetes.default.svc
     namespace: whoami
