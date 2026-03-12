@@ -5,12 +5,14 @@ metadata:
   name: whoami
   namespace: whoami
   annotations:
-    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
     - hosts:
         - whoami.growcodelabs.com
+      secretName: whoami-tls
   rules:
     - host: whoami.growcodelabs.com
       http:
