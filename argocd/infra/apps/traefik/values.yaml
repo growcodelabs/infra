@@ -46,8 +46,7 @@ certificatesResolvers:
     acme:
       email: info@growcodelabs.com
       storage: /data/acme.json
-      httpChallenge:
-        entryPoint: web
+      tlsChallenge: true
 
 persistence:
   enabled: true
