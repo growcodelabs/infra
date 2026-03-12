@@ -10,6 +10,7 @@ spec:
   sourceRepos:
     - https://github.com/growcodelabs/infra.git
     - https://argoproj.github.io/argo-helm
+    - https://traefik.github.io/charts
   destinations:
     - server: https://kubernetes.default.svc
       namespace: "*"
