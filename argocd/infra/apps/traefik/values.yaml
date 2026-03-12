@@ -14,19 +14,12 @@ ports:
       default: true
     exposedPort: 80
     protocol: TCP
-    redirections:
-      entryPoint:
-        to: websecure
-        scheme: https
-        permanent: true
   websecure:
     port: 8443
     expose:
       default: true
     exposedPort: 443
     protocol: TCP
-    tls:
-      enabled: true
 
 service:
   type: LoadBalancer
@@ -39,7 +32,6 @@ ingressClass:
 providers:
   kubernetesCRD:
     enabled: true
-    allowCrossNamespaceResources: true
   kubernetesIngress:
     enabled: true
 
