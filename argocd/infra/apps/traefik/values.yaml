@@ -45,5 +45,3 @@ resources:
 
 rbac:
   enabled: true
-serviceAccount:
-  name: traefik
