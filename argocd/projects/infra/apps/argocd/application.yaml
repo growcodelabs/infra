@@ -13,7 +13,7 @@ spec:
       targetRevision: 9.4.10
       helm:
         valueFiles:
-          - $values/argocd/apps/argocd/values.yaml
+          - $values/argocd/projects/infra/apps/argocd/values.yaml
     - repoURL: https://github.com/growcodelabs/infra.git
       targetRevision: main
       ref: values
