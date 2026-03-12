@@ -11,7 +11,7 @@ spec:
     - https://github.com/growcodelabs/infra.git
     - https://argoproj.github.io/argo-helm
     - https://traefik.github.io/charts
-    - oci://quay.io/jetstack/charts
+    - https://charts.jetstack.io
   destinations:
     - server: https://kubernetes.default.svc
       namespace: "*"
