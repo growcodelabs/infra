@@ -14,10 +14,10 @@ spec:
       helm:
         valueFiles:
           - $values/argocd/infra/apps/cert-manager/values.yaml
-    - repoURL: https://github.com/growcodelabs/infra.git
+    - repoURL: git@github.com:growcodelabs/infra.git
       targetRevision: main
       ref: values
-    - repoURL: https://github.com/growcodelabs/infra.git
+    - repoURL: git@github.com:growcodelabs/infra.git
       targetRevision: main
       path: manifests/infra/cert-manager
   destination:

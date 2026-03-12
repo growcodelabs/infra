@@ -53,3 +53,5 @@ devenv.local.yaml
 
 # env file
 .env
+
+argocd_deploy_key*
