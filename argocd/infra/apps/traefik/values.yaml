@@ -1,0 +1,57 @@
+deployment:
+  replicas: 1
+
+logs:
+  general:
+    level: INFO
+  access:
+    enabled: true
+
+ports:
+  web:
+    port: 8000
+    expose:
+      default: true
+    exposedPort: 80
+    protocol: TCP
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
+  websecure:
+    port: 8443
+    expose:
+      default: true
+    exposedPort: 443
+    protocol: TCP
+    tls:
+      enabled: true
+
+service:
+  type: LoadBalancer
+  annotations: {}
+
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+
+providers:
+  kubernetesCRD:
+    enabled: true
+    allowCrossNamespaceResources: true
+  kubernetesIngress:
+    enabled: true
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+
+rbac:
+  enabled: true
+serviceAccount:
+  name: traefik
