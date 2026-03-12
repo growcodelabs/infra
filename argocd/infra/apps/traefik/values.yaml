@@ -14,6 +14,11 @@ ports:
       default: true
     exposedPort: 80
     protocol: TCP
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
   websecure:
     port: 8443
     expose:
@@ -34,6 +39,19 @@ providers:
     enabled: true
   kubernetesIngress:
     enabled: true
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: info@growcodelabs.com
+      storage: /data/acme.json
+      httpChallenge:
+        entryPoint: web
+
+persistence:
+  enabled: true
+  size: 128Mi
+  path: /data
 
 resources:
   requests:
