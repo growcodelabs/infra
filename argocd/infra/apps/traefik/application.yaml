@@ -17,6 +17,9 @@ spec:
     - repoURL: https://github.com/growcodelabs/infra.git
       targetRevision: main
       ref: values
+    - repoURL: https://github.com/growcodelabs/infra.git
+      targetRevision: main
+      path: manifests/infra/traefik
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik
