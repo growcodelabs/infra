@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/growcodelabs/infra.git
     targetRevision: HEAD
-    path: argocd/apps/whoami
+    path: argocd/apps
     directory:
       recurse: true
   destination:
