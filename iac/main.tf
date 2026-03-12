@@ -27,6 +27,6 @@ module "environment" {
   }
 
   default_node_pool = {
-    node_count = 1
+    node_count = 2
   }
 }
