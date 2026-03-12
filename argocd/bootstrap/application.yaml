@@ -12,7 +12,7 @@ spec:
     targetRevision: HEAD
     path: argocd/apps
     directory:
-      recursive: true
+      recurse: true
       include: "application.yaml"
   destination:
     server: https://kubernetes.default.svc
