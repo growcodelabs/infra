@@ -1,7 +1,8 @@
 crds:
   upgradeJob:
     image:
-      tag: v1.32.0
+      repository: docker.io/bitnami/kubectl
+      tag: latest
 
 server:
   authModes:
