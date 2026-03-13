@@ -1221,7 +1221,10 @@ server:
     extraHosts: []
     extraPaths: []
     extraRules: []
-    extraTls: []
+    extraTls:
+      - hosts:
+          - argocd.growcodelabs.com
+        secretName: argocd-tls
     gke:
       backendConfig: {}
       frontendConfig: {}
@@ -1229,11 +1232,11 @@ server:
         create: true
         extraDomains: []
     hostname: argocd.growcodelabs.com
-    ingressClassName: ""
+    ingressClassName: traefik
     labels: {}
     path: /
     pathType: Prefix
-    tls: true
+    tls: false
   ingressGrpc:
     annotations: {}
     enabled: false
