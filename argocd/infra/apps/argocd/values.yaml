@@ -323,8 +323,6 @@ configs:
   params:
     annotations: {}
     create: true
-    server:
-      insecure: "true"
   rbac:
     annotations: {}
     create: true
@@ -1210,15 +1208,13 @@ server:
     tag: ""
   imagePullSecrets: []
   ingress:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-      traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
+    annotations: {}
     aws:
       backendProtocolVersion: GRPC
       serviceAnnotations: {}
       serviceType: NodePort
     controller: generic
-    enabled: true
+    enabled: false
     extraHosts: []
     extraPaths: []
     extraRules: []
@@ -1229,12 +1225,12 @@ server:
       managedCertificate:
         create: true
         extraDomains: []
-    hostname: argocd.growcodelabs.com
-    ingressClassName: traefik
+    hostname: ""
+    ingressClassName: ""
     labels: {}
     path: /
     pathType: Prefix
-    tls: true
+    tls: false
   ingressGrpc:
     annotations: {}
     enabled: false
