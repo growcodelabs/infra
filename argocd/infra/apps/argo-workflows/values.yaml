@@ -6,29 +6,13 @@ crds:
 
 server:
   authModes:
-    - sso
-  sso:
-    issuer: https://argocd.growcodelabs.com/api/dex
-    clientId:
-      name: argo-workflows-sso
-      key: client-id
-    clientSecret:
-      name: argo-workflows-sso
-      key: client-secret
-    redirectUrl: https://wf.growcodelabs.com/oauth2/callback
-    scopes:
-      - openid
-      - profile
-      - email
-      - groups
-    rbac:
-      enabled: true
+    - server
   ingress:
     enabled: true
     ingressClassName: traefik
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
-      traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
+      traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd,argo-argo-workflows-basic-auth@kubernetescrd
     hosts:
       - wf.growcodelabs.com
     tls:

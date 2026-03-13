@@ -1,0 +1,8 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: argo-workflows-basic-auth
+  namespace: argo
+spec:
+  basicAuth:
+    secret: argo-workflows-basic-auth-users

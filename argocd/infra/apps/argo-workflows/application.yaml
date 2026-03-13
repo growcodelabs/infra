@@ -19,6 +19,9 @@ spec:
     - repoURL: git@github.com:growcodelabs/infra.git
       targetRevision: main
       ref: values
+    - repoURL: git@github.com:growcodelabs/infra.git
+      targetRevision: main
+      path: manifests/infra/argo-workflows
   destination:
     server: https://kubernetes.default.svc
     namespace: argo

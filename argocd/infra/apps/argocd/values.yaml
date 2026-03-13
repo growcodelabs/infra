@@ -311,23 +311,6 @@ configs:
     timeout.hard.reconciliation: 0s
     timeout.reconciliation: 120s
     timeout.reconciliation.jitter: 60s
-    dex.config: |
-      connectors:
-        - type: google
-          id: google
-          name: Google
-          config:
-            clientID: $argocd-dex-google:client-id
-            clientSecret: $argocd-dex-google:client-secret
-            redirectURI: https://argocd.growcodelabs.com/api/dex/callback
-            hostedDomains:
-              - growcodelabs.com
-      staticClients:
-        - id: argo-workflows
-          name: Argo Workflows
-          redirectURIs:
-            - https://wf.growcodelabs.com/oauth2/callback
-          secret: $argo-workflows-dex-client:client-secret
   cmp:
     annotations: {}
     create: false
