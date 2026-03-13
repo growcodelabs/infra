@@ -1178,7 +1178,8 @@ server:
       repository: quay.io/argoprojlabs/argocd-extension-installer
       tag: v0.0.9
     resources: {}
-  extraArgs: []
+  extraArgs:
+    - --insecure
   extraContainers: []
   grpcroute:
     annotations: {}
