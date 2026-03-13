@@ -6,7 +6,23 @@ crds:
 
 server:
   authModes:
-    - server
+    - sso
+  sso:
+    issuer: https://argocd.growcodelabs.com/api/dex
+    clientId:
+      name: argo-workflows-sso
+      key: client-id
+    clientSecret:
+      name: argo-workflows-sso
+      key: client-secret
+    redirectUrl: https://wf.growcodelabs.com/oauth2/callback
+    scopes:
+      - openid
+      - profile
+      - email
+      - groups
+    rbac:
+      enabled: true
   ingress:
     enabled: true
     ingressClassName: traefik
