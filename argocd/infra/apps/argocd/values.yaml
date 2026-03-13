@@ -28,7 +28,7 @@ applicationSet:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
@@ -139,7 +139,7 @@ commitServer:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
@@ -239,13 +239,15 @@ configs:
     resource.customizations.ignoreResourceUpdates.argoproj.io_Rollout: |
       jqPathExpressions:
         - '.metadata.annotations."notified.notifications.argoproj.io"'
-    resource.customizations.ignoreResourceUpdates.autoscaling_HorizontalPodAutoscaler: |
+    resource.customizations.ignoreResourceUpdates.autoscaling_HorizontalPodAutoscaler:
+      |
       jqPathExpressions:
         - '.metadata.annotations."autoscaling.alpha.kubernetes.io/behavior"'
         - '.metadata.annotations."autoscaling.alpha.kubernetes.io/conditions"'
         - '.metadata.annotations."autoscaling.alpha.kubernetes.io/metrics"'
         - '.metadata.annotations."autoscaling.alpha.kubernetes.io/current-metrics"'
-    resource.customizations.ignoreResourceUpdates.discovery.k8s.io_EndpointSlice: |
+    resource.customizations.ignoreResourceUpdates.discovery.k8s.io_EndpointSlice:
+      |
       jsonPointers:
         - /metadata
         - /endpoints
@@ -327,7 +329,7 @@ configs:
     policy.csv: ""
     policy.default: ""
     policy.matchMode: glob
-    scopes: '[groups]'
+    scopes: "[groups]"
   repositories: {}
   repositoriesAnnotations: {}
   secret:
@@ -381,7 +383,7 @@ controller:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
@@ -505,7 +507,7 @@ dex:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     runAsUser: 1001
@@ -671,7 +673,7 @@ notifications:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
@@ -775,7 +777,7 @@ redis:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     readOnlyRootFilesystem: true
   deploymentAnnotations: {}
   deploymentLabels: {}
@@ -789,7 +791,7 @@ redis:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
-        - ALL
+          - ALL
       readOnlyRootFilesystem: true
       runAsNonRoot: true
       seccompProfile:
@@ -940,7 +942,7 @@ redisSecretInit:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
@@ -995,7 +997,7 @@ repoServer:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
@@ -1144,7 +1146,7 @@ server:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
@@ -1163,7 +1165,7 @@ server:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
-        - ALL
+          - ALL
       readOnlyRootFilesystem: true
       runAsNonRoot: true
       runAsUser: 1000
@@ -1185,9 +1187,9 @@ server:
     labels: {}
     parentRefs: []
     rules:
-    - matches:
-      - method:
-          type: Exact
+      - matches:
+          - method:
+              type: Exact
   hostNetwork: false
   httproute:
     annotations: {}
@@ -1196,10 +1198,10 @@ server:
     labels: {}
     parentRefs: []
     rules:
-    - matches:
-      - path:
-          type: PathPrefix
-          value: /
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
   image:
     imagePullPolicy: ""
     repository: ""
