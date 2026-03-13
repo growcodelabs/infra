@@ -7,6 +7,18 @@ crds:
 server:
   authModes:
     - server
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
+    hosts:
+      - wf.growcodelabs.com
+    tls:
+      - hosts:
+          - wf.growcodelabs.com
+        secretName: argo-workflows-tls
 
 workflow:
   serviceAccount:
