@@ -6,19 +6,19 @@ Os passos a seguir são necessários antes que o ArgoCD seja instalado, para gar
 
 ### Credentials do Argo Workflows (basic auth)
 
-O acesso ao Argo Workflows é protegido por basic auth no Traefik. Gere o hash da senha e crie o secret antes do bootstrap:
+O acesso ao Argo Workflows é protegido por basic auth no Traefik. Crie o secret antes do bootstrap:
 
 ```bash
-# Instale o htpasswd se necessário: apt install apache2-utils / brew install httpd
-htpasswd -nb <USUARIO> <SENHA>
-# Exemplo de saída: admin:$apr1$xyz...
-
 kubectl create namespace argo
 
 kubectl create secret generic argo-workflows-basic-auth-users \
   --namespace argo \
-  --from-literal=users='<SAIDA_DO_HTPASSWD>'
+  --type=kubernetes.io/basic-auth \
+  --from-literal=username=<USUARIO> \
+  --from-literal=password=<SENHA>
 ```
+
+> As credenciais ficam em texto plano no secret do Kubernetes. Para maior segurança, habilite [encryption at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/) no cluster.
 
 ### Bootstrap do cluster
 
