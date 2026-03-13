@@ -625,7 +625,7 @@ global:
   deploymentAnnotations: {}
   deploymentLabels: {}
   deploymentStrategy: {}
-  domain: argocd.example.com
+  domain: argocd.growcodelabs.com
   dualStack:
     ipFamilies: []
     ipFamilyPolicy: ""
@@ -1178,7 +1178,8 @@ server:
       repository: quay.io/argoprojlabs/argocd-extension-installer
       tag: v0.0.9
     resources: {}
-  extraArgs: []
+  extraArgs:
+    - --insecure
   extraContainers: []
   grpcroute:
     annotations: {}
@@ -1208,13 +1209,15 @@ server:
     tag: ""
   imagePullSecrets: []
   ingress:
-    annotations: {}
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
     aws:
       backendProtocolVersion: GRPC
       serviceAnnotations: {}
       serviceType: NodePort
     controller: generic
-    enabled: false
+    enabled: true
     extraHosts: []
     extraPaths: []
     extraRules: []
@@ -1225,12 +1228,12 @@ server:
       managedCertificate:
         create: true
         extraDomains: []
-    hostname: ""
+    hostname: argocd.growcodelabs.com
     ingressClassName: ""
     labels: {}
     path: /
     pathType: Prefix
-    tls: false
+    tls: true
   ingressGrpc:
     annotations: {}
     enabled: false
