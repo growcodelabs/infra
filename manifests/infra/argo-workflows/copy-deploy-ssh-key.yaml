@@ -74,7 +74,7 @@ spec:
             - -c
             - |
               kubectl get secret deploy-ssh-key -n argocd -o json \
-                | jq '.metadata.namespace = "argo"'
+                | jq '.metadata.namespace = "argo"' \
                 | jq 'del(.metadata.resourceVersion)' \
                 | jq 'del(.metadata.uid)' \
                 | jq 'del(.metadata.creationTimestamp)' \
