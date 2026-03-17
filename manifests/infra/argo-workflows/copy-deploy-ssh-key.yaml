@@ -1,0 +1,83 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: deploy-ssh-key-copier
+  namespace: argo
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deploy-ssh-key-copier
+  namespace: argocd
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["deploy-ssh-key"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deploy-ssh-key-copier-reader
+  namespace: argocd
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: deploy-ssh-key-copier
+subjects:
+  - kind: ServiceAccount
+    name: deploy-ssh-key-copier
+    namespace: argo
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deploy-ssh-key-writer
+  namespace: argo
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "create", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deploy-ssh-key-copier-writer
+  namespace: argo
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: deploy-ssh-key-writer
+subjects:
+  - kind: ServiceAccount
+    name: deploy-ssh-key-copier
+    namespace: argo
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: copy-deploy-ssh-key
+  namespace: argo
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+spec:
+  template:
+    spec:
+      serviceAccountName: deploy-ssh-key-copier
+      restartPolicy: OnFailure
+      containers:
+        - name: copier
+          image: bitnami/kubectl:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              kubectl get secret deploy-ssh-key -n argocd -o json \
+                | jq '.metadata.namespace = "argo"'
+                | jq 'del(.metadata.resourceVersion)' \
+                | jq 'del(.metadata.uid)' \
+                | jq 'del(.metadata.creationTimestamp)' \
+                | jq 'del(.metadata.annotations)' \
+                | jq 'del(.metadata.labels)' \
+                | kubectl apply -f -
