@@ -33,7 +33,9 @@ helm install argocd argo-cd \
   --values argocd/infra/apps/argocd/values.yaml
 ```
 
-#### 2. Configurar credencial do repositório privado
+#### 2. Configurar credencial dos repositórios da organização
+
+O ArgoCD usa um **Credential Template** para aplicar a mesma chave SSH a todos os repositórios da organização. Qualquer repo com URL prefixada por `git@github.com:growcodelabs` utilizará automaticamente esta credencial.
 
 Gerar o par de chaves SSH (sem passphrase):
 
@@ -41,24 +43,26 @@ Gerar o par de chaves SSH (sem passphrase):
 ssh-keygen -t ed25519 -C "argocd@growcodelabs" -f argocd_deploy_key -N ""
 ```
 
-Adicionar a chave pública como **Deploy Key** no repositório GitHub:
-- Acesse: `GitHub → infra-monorepo → Settings → Deploy keys → Add deploy key`
+Adicionar a chave pública como **Deploy Key** nos repositórios GitHub desejados:
+- Acesse: `GitHub → <repo> → Settings → Deploy keys → Add deploy key`
 - Título: `argocd`
 - Chave: conteúdo de `argocd_deploy_key.pub`
 - Marcar como **read-only**
 
+Garanta que este repositório tenha esta chave configurada.
+
 Criar o Secret no cluster com a chave privada:
 
 ```bash
-kubectl create secret generic argocd-infra-repo \
+kubectl create secret generic deploy-ssh-key \
   --namespace argocd \
   --from-literal=type=git \
-  --from-literal=url=git@github.com:growcodelabs/infra.git \
+  --from-literal=url=git@github.com:growcodelabs \
   --from-file=sshPrivateKey=argocd_deploy_key
 
-kubectl label secret argocd-infra-repo \
+kubectl label secret deploy-ssh-key \
   --namespace argocd \
-  argocd.argoproj.io/secret-type=repository
+  argocd.argoproj.io/secret-type=repo-creds
 ```
 
 Remover os arquivos de chave da máquina local após aplicar:
