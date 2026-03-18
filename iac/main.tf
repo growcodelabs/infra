@@ -22,9 +22,7 @@ module "environment" {
   ip_range = "10.0.0.0/24"
   region   = local.region
 
-  databases = {
-    shared = {}
-  }
+  databases = {}
 
   default_node_pool = {
     node_count = 2
