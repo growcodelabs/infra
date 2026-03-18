@@ -308,6 +308,7 @@ configs:
         - ClusterBackgroundScanReport
         - UpdateRequest
     statusbadge.enabled: false
+    controller.self.heal.timeout.seconds: "900"
     timeout.hard.reconciliation: 0s
     timeout.reconciliation: 120s
     timeout.reconciliation.jitter: 60s
@@ -397,7 +398,9 @@ controller:
     sizeLimit: ""
   env: []
   envFrom: []
-  extraArgs: []
+  extraArgs:
+    - --status-processors=5
+    - --operation-processors=2
   extraContainers: []
   heartbeatTime: 10
   hostNetwork: false
@@ -459,7 +462,13 @@ controller:
     successThreshold: 1
     timeoutSeconds: 1
   replicas: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
   revisionHistoryLimit: 5
   roleRules: []
   runtimeClassName: ""
@@ -873,7 +882,13 @@ redis:
     periodSeconds: 15
     successThreshold: 1
     timeoutSeconds: 15
-  resources: {}
+  resources:
+    requests:
+      cpu: 25m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
   runtimeClassName: ""
   securityContext:
     runAsNonRoot: true
@@ -1075,7 +1090,13 @@ repoServer:
     successThreshold: 1
     timeoutSeconds: 1
   replicas: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
   runtimeClassName: ""
   service:
     annotations: {}
@@ -1297,7 +1318,13 @@ server:
     successThreshold: 1
     timeoutSeconds: 1
   replicas: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
   route:
     annotations: {}
     enabled: false
