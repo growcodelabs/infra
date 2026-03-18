@@ -18,13 +18,13 @@ variable "k8s_ha" {
 variable "default_node_pool" {
   type = object({
     name       = optional(string, "apps")
-    size       = optional(string, "s-2vcpu-2gb")
-    node_count = optional(number, 1)
+    size       = optional(string, "s-1vcpu-2gb")
+    node_count = optional(number, 0)
   })
 
   default = {
     name       = "apps"
-    size       = "s-2vcpu-2gb"
+    size       = "s-1vcpu-2gb"
     node_count = 0
   }
 }
