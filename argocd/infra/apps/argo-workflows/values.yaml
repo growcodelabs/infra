@@ -7,6 +7,8 @@ crds:
 server:
   authModes:
     - server
+  nodeSelector:
+    workload: workflows
   ingress:
     enabled: true
     ingressClassName: traefik
@@ -36,6 +38,8 @@ workflow:
 controller:
   workflowNamespaces:
     - argo
+  nodeSelector:
+    workload: workflows
   resources:
     requests:
       cpu: "50m"

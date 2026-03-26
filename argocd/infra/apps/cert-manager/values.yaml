@@ -3,6 +3,9 @@ crds:
 
 replicaCount: 1
 
+nodeSelector:
+  workload: infra
+
 resources:
   requests:
     cpu: "50m"

@@ -45,3 +45,6 @@ resources:
 
 rbac:
   enabled: true
+
+nodeSelector:
+  workload: infra
