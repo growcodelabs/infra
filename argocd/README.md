@@ -54,6 +54,8 @@ Garanta que este repositório tenha esta chave configurada.
 Criar o Secret no cluster com a chave privada:
 
 ```bash
+kubectl create namespace argocd
+
 kubectl create secret generic deploy-ssh-key \
   --namespace argocd \
   --from-literal=type=git \
