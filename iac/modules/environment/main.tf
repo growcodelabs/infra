@@ -34,8 +34,27 @@ resource "digitalocean_kubernetes_cluster" "this" {
     name       = var.default_node_pool.name
     size       = var.default_node_pool.size
     node_count = var.default_node_pool.node_count
+
+    labels = {
+      workload = var.default_node_pool.name
+    }
   }
 }
+
+resource "digitalocean_kubernetes_node_pool" "this" {
+  for_each = var.node_pools
+
+  cluster_id = digitalocean_kubernetes_cluster.this.id
+  node_count = each.value.node_count
+
+  size = each.value.size
+  name = each.key
+
+  labels = {
+    workload = each.key
+  }
+}
+
 
 resource "digitalocean_database_cluster" "this" {
   for_each = var.databases

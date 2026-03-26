@@ -23,10 +23,18 @@ variable "default_node_pool" {
   })
 
   default = {
-    name       = "apps"
+    name       = "default"
     size       = "s-1vcpu-2gb"
     node_count = 0
   }
+}
+
+variable "node_pools" {
+  type = map(object({
+    size       = optional(string, "s-1vcpu-2gb")
+    node_count = optional(number, 0)
+  }))
+
 }
 
 variable "databases" {

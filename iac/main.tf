@@ -24,7 +24,15 @@ module "environment" {
 
   databases = {}
 
-  default_node_pool = {
-    node_count = 2
+  node_pools = {
+    argocd = {
+      size       = "s-1vcpu-2gb"
+      node_count = 1
+    }
+
+    apps = {
+      size       = "s-1vcpu-2gb"
+      node_count = 1
+    }
   }
 }
