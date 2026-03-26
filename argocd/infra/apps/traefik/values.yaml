@@ -37,10 +37,10 @@ providers:
 
 resources:
   requests:
-    cpu: "100m"
-    memory: "128Mi"
+    cpu: "50m"
+    memory: "64Mi"
   limits:
-    cpu: "500m"
+    cpu: "200m"
     memory: "256Mi"
 
 rbac:

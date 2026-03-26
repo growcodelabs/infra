@@ -19,6 +19,13 @@ server:
       - hosts:
           - wf.growcodelabs.com
         secretName: argo-workflows-tls
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "100m"
+      memory: "256Mi"
 
 workflow:
   serviceAccount:
@@ -29,3 +36,10 @@ workflow:
 controller:
   workflowNamespaces:
     - argo
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "100m"
+      memory: "256Mi"

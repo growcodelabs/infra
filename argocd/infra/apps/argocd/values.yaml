@@ -115,7 +115,13 @@ applicationSet:
     successThreshold: 1
     timeoutSeconds: 1
   replicas: 1
-  resources: {}
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 192Mi
   runtimeClassName: ""
   service:
     annotations: {}
@@ -467,7 +473,7 @@ controller:
       cpu: 100m
       memory: 256Mi
     limits:
-      cpu: 500m
+      cpu: 300m
       memory: 512Mi
   revisionHistoryLimit: 5
   roleRules: []
@@ -887,7 +893,7 @@ redis:
       cpu: 25m
       memory: 32Mi
     limits:
-      cpu: 100m
+      cpu: 75m
       memory: 64Mi
   runtimeClassName: ""
   securityContext:
@@ -1095,7 +1101,7 @@ repoServer:
       cpu: 50m
       memory: 128Mi
     limits:
-      cpu: 300m
+      cpu: 200m
       memory: 256Mi
   runtimeClassName: ""
   service:
