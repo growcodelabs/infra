@@ -25,7 +25,12 @@ module "environment" {
   databases = {}
 
   node_pools = {
-    argocd = {
+    infra = {
+      size       = "s-1vcpu-2gb"
+      node_count = 1
+    }
+
+    workflows = {
       size       = "s-1vcpu-2gb"
       node_count = 1
     }
