@@ -472,9 +472,6 @@ controller:
     requests:
       cpu: 100m
       memory: 256Mi
-    limits:
-      cpu: 300m
-      memory: 512Mi
   revisionHistoryLimit: 5
   roleRules: []
   runtimeClassName: ""
