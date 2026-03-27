@@ -13,6 +13,7 @@ spec:
     - https://argoproj.github.io/argo-helm
     - https://traefik.github.io/charts
     - https://charts.jetstack.io
+    - https://kubernetes-sigs.github.io/metrics-server/
   destinations:
     - server: https://kubernetes.default.svc
       namespace: "*"
