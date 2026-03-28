@@ -3,6 +3,7 @@
 {
   packages = with pkgs; [
     argocd
+    cue
     doctl
     git
     kustomize
