@@ -1,0 +1,117 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: ci-build
+spec:
+  entrypoint: pipeline
+  arguments:
+    parameters:
+      - name: revision
+        value: main
+  templates:
+    - name: pipeline
+      steps:
+        - - name: clone
+            template: git-clone
+        - - name: build
+            template: kaniko-build
+            arguments:
+              parameters:
+                - name: revision
+                  value: "{{steps.clone.outputs.parameters.revision}}"
+    - name: git-clone
+      outputs:
+        parameters:
+          - name: revision
+            valueFrom:
+              path: /tmp/revision
+      volumes:
+        - name: workspace
+          emptyDir: {}
+        - name: github-ssh-key
+          secret:
+            secretName: github-ssh-key
+            items:
+              - key: id_ed25519
+                path: id_ed25519
+      container:
+        image: alpine/git:latest
+        command: [sh, -c]
+        args:
+          - |
+            set -euo pipefail
+            SSH_DIR="$HOME/.ssh"
+            mkdir -p "$SSH_DIR"
+            chmod 700 "$SSH_DIR"
+            cp /ssh/id_ed25519 "$SSH_DIR/id_ed25519"
+            chmod 600 "$SSH_DIR/id_ed25519"
+            ssh-keyscan -H github.com >> "$SSH_DIR/known_hosts"
+            ssh-keyscan -p 443 -H ssh.github.com >> "$SSH_DIR/known_hosts"
+            git clone git@github.com:GIT_OWNER/GIT_REPO.git /workspace/app
+            cd /workspace/app
+            git checkout {{workflow.parameters.revision}}
+            git rev-parse HEAD > /tmp/revision
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
+          - name: github-ssh-key
+            mountPath: /ssh
+            readOnly: true
+
+    - name: kaniko-build
+      inputs:
+        parameters:
+          - name: revision
+      volumes:
+        - name: workspace
+          emptyDir: {}
+        - name: docker-credentials
+          projected:
+            sources:
+              - secret:
+                  name: do-registry-credentials
+                  items:
+                    - key: .dockerconfigjson
+                      path: config.json
+        - name: github-ssh-key
+          secret:
+            secretName: github-ssh-key
+            items:
+              - key: id_ed25519
+                path: id_ed25519
+      initContainers:
+        - name: git-clone
+          image: alpine/git:latest
+          command: [sh, -c]
+          args:
+            - |
+              set -euo pipefail
+              SSH_DIR="$HOME/.ssh"
+              mkdir -p "$SSH_DIR"
+              chmod 700 "$SSH_DIR"
+              cp /ssh/id_ed25519 "$SSH_DIR/id_ed25519"
+              chmod 600 "$SSH_DIR/id_ed25519"
+              ssh-keyscan -H github.com >> "$SSH_DIR/known_hosts"
+              ssh-keyscan -p 443 -H ssh.github.com >> "$SSH_DIR/known_hosts"
+              git clone git@github.com:GIT_OWNER/GIT_REPO.git /workspace/app
+              cd /workspace/app
+              git checkout {{inputs.parameters.revision}}
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
+            - name: github-ssh-key
+              mountPath: /ssh
+              readOnly: true
+      container:
+        image: gcr.io/kaniko-project/executor:latest
+        args:
+          - --context=/workspace/app
+          - --dockerfile=/workspace/app/Dockerfile
+          - --destination=REGISTRY_BASE:{{inputs.parameters.revision}}
+          - --cache=true
+          - --cache-repo=REGISTRY_BASE/cache
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
+          - name: docker-credentials
+            mountPath: /kaniko/.docker
