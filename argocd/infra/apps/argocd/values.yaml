@@ -323,13 +323,13 @@ configs:
     create: true
     plugins:
       cue:
-        - image: cuelang/cue:0.16.0
+        - image: cuelang/cue:0.15.4
           discover:
             find:
               glob: "cue.mod"
           generate:
             command: [bash, -c]
-            args: ["cue cmd export"]
+            args: ["cue export ./app-* -e objects --out yaml"]
           lockRepo: false
   credentialTemplates: {}
   credentialTemplatesAnnotations: {}
