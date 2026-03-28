@@ -1,7 +1,16 @@
 { pkgs, lib, config, inputs, ... }:
 
 {
-  packages = with pkgs; [ git opentofu postgresql_18 doctl argocd starship kubernetes-helm kustomize ];
+  packages = with pkgs; [
+    argocd
+    doctl
+    git
+    kustomize
+    kubernetes-helm
+    opentofu
+    postgresql_18
+    starship
+  ];
 
   languages.opentofu = {
     enable     = true;
