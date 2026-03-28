@@ -20,6 +20,23 @@ kubectl create secret generic argo-workflows-basic-auth-users \
 
 > As credenciais ficam em texto plano no secret do Kubernetes. Para maior segurança, habilite [encryption at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/) no cluster.
 
+### DigitalOcean Container Registry
+
+Para que o Argo Workflows faça push de imagens, crie o secret com autenticação automática:
+
+```bash
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry-credentials
+  namespace: argo
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: $(doctl registry docker-config | base64 -w0)
+EOF
+```
+
 ### Bootstrap do cluster
 
 #### 1. Instalar o ArgoCD
