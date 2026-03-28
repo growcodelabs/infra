@@ -320,8 +320,17 @@ configs:
     timeout.reconciliation.jitter: 60s
   cmp:
     annotations: {}
-    create: false
-    plugins: {}
+    create: true
+    plugins:
+      cue:
+        - image: cuelang/cue:0.16.0
+          discover:
+            find:
+              glob: "cue.mod"
+          generate:
+            command: [bash, -c]
+            args: ["cue cmd export"]
+          lockRepo: false
   credentialTemplates: {}
   credentialTemplatesAnnotations: {}
   gpg:
