@@ -1042,6 +1042,12 @@ repoServer:
   envFrom: []
   existingVolumes: {}
   extraArgs: []
+  extraVolumes:
+    - emptyDir: {}
+      name: var-run
+    - configMap:
+        name: argocd-cmp-cm
+      name: cmp-tmp
   extraContainers:
     - args:
         - /var/run/argocd/argocd-cmp-server
@@ -1144,16 +1150,7 @@ repoServer:
   topologySpreadConstraints: []
   useEphemeralHelmWorkingDir: true
   volumeMounts: []
-  volumes:
-    - emptyDir: {}
-      name: var-run
-    - emptyDir: {}
-      name: plugins
-    - emptyDir: {}
-      name: tmp
-    - configMap:
-        name: argocd-cmp-cm
-      name: cmp-tmp
+  volumes: []
 server:
   affinity: {}
   automountServiceAccountToken: true
