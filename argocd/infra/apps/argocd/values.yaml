@@ -1061,11 +1061,8 @@ repoServer:
           name: var-run
         - mountPath: /home/argocd/cmp-server/plugins
           name: plugins
-        - mountPath: /tmp
-          name: tmp
-        - mountPath: /home/argocd/cmp-server/config/cue.yaml
+        - mountPath: /home/argocd/cmp-server/config
           name: cmp-tmp
-          subPath: cue.yaml
   hostNetwork: false
   image:
     imagePullPolicy: ""
