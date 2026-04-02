@@ -34,7 +34,7 @@ metadata:
 spec:
   description: applications
   sourceRepos:
-    - git@github.com:growcodelabs/infra.git
+    - git@github.com:growcodelabs/app-finance.git
   destinations:
     - server: https://kubernetes.default.svc
       namespace: "*"
