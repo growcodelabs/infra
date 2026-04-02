@@ -12,8 +12,6 @@ spec:
     repoURL: git@github.com:growcodelabs/infra.git
     targetRevision: HEAD
     path: manifests/apps
-    plugin:
-      name: cue
   destination:
     server: https://kubernetes.default.svc
     namespace: argo
