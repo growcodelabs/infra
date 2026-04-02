@@ -1042,24 +1042,7 @@ repoServer:
   envFrom: []
   existingVolumes: {}
   extraArgs: []
-  extraContainers:
-    - args:
-        - /var/run/argocd/argocd-cmp-server
-      image: cuelang/cue:0.15.4
-      name: cue
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 999
-      volumeMounts:
-        - mountPath: /var/run/argocd
-          name: var-run
-        - mountPath: /home/argocd/cmp-server/plugins
-          name: plugins
-        - mountPath: /tmp
-          name: tmp
-        - mountPath: /home/argocd/cmp-server/config/cue.yaml
-          name: cmp-tmp
-          subPath: cue.yaml
+  extraContainers: []
   hostNetwork: false
   image:
     imagePullPolicy: ""
@@ -1144,16 +1127,7 @@ repoServer:
   topologySpreadConstraints: []
   useEphemeralHelmWorkingDir: true
   volumeMounts: []
-  volumes:
-    - emptyDir: {}
-      name: var-run
-    - emptyDir: {}
-      name: plugins
-    - emptyDir: {}
-      name: tmp
-    - configMap:
-        name: argocd-cmp-cm
-      name: cmp-tmp
+  volumes: []
 server:
   affinity: {}
   automountServiceAccountToken: true
