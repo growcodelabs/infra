@@ -1049,7 +1049,14 @@ repoServer:
         name: argocd-cmp-cm
       name: cmp-tmp
   extraContainers:
-    - image: cuelang/cue:0.15.4
+    - args:
+        - export
+        - ./app-*
+        - -e
+        - objects
+        - --out
+        - yaml
+      image: cuelang/cue:0.15.4
       name: cue
       securityContext:
         runAsNonRoot: true
