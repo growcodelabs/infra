@@ -13,6 +13,8 @@ spec:
       labels:
         app: app-finance
     spec:
+      nodeSelector:
+        workload: apps
       imagePullSecrets:
         - name: registry-growcodelabs
       containers:
