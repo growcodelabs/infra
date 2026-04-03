@@ -321,16 +321,7 @@ configs:
   cmp:
     annotations: {}
     create: true
-    plugins:
-      cue:
-        - image: cuelang/cue:0.15.4
-          discover:
-            find:
-              glob: "cue.mod"
-          generate:
-            command: [bash, -c]
-            args: ["cue export ./app-* -e objects --out yaml"]
-          lockRepo: false
+    plugins: {}
   credentialTemplates: {}
   credentialTemplatesAnnotations: {}
   gpg:
