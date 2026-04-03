@@ -26,12 +26,12 @@ module "environment" {
 
   node_pools = {
     infra = {
-      size       = "s-4vcpu-2gb"
+      size       = "s-2vcpu-4gb"
       node_count = 1
     }
 
     apps = {
-      size       = "s-4vcpu-2gb"
+      size       = "s-2vcpu-4gb"
       node_count = 1
     }
   }
