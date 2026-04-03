@@ -31,7 +31,7 @@ spec:
         args:
           - |
             mkdir -p /root/.ssh && \
-            cp /etc/deploy-key/ssh-privatekey /root/.ssh/id_rsa && \
+            cp /etc/deploy-key/sshPrivateKey /root/.ssh/id_rsa && \
             chmod 600 /root/.ssh/id_rsa && \
             ssh-keyscan github.com >> /root/.ssh/known_hosts && \
             git clone --depth=1 --branch {{workflow.parameters.revision}} {{workflow.parameters.repo}} /workspace/app
