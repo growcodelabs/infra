@@ -4,12 +4,12 @@ metadata:
   name: app-finance-ci
   namespace: argo
 spec:
-  entrypoint: clone
+  entrypoint: ci
   serviceAccountName: argo
   arguments:
     parameters:
       - name: repo
-        value: "git@github.com:growcodelabs/app-finance.git"
+        value: "growcodelabs/app-finance"
       - name: revision
         value: "main"
   volumeClaimTemplates:
@@ -21,23 +21,61 @@ spec:
           requests:
             storage: 1Gi
   volumes:
-    - name: deploy-key
+    - name: github-app
       secret:
-        secretName: deploy-ssh-key
+        secretName: github-app-credentials
   templates:
+    - name: ci
+      steps:
+        - - name: get-token
+            template: get-token
+        - - name: clone
+            template: clone
+            arguments:
+              parameters:
+                - name: token
+                  value: "{{steps.get-token.outputs.parameters.token}}"
+
+    - name: get-token
+      outputs:
+        parameters:
+          - name: token
+            valueFrom:
+              path: /tmp/token
+      container:
+        image: alpine:3.19
+        command: [sh, -c]
+        args:
+          - |
+            apk add --no-cache curl openssl && \
+            APP_ID=$(cat /etc/github-app/appId) && \
+            INSTALLATION_ID=$(cat /etc/github-app/installationId) && \
+            HEADER=$(printf '{"alg":"RS256","typ":"JWT"}' | base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n') && \
+            NOW=$(date +%s) && \
+            PAYLOAD=$(printf '{"iat":%d,"exp":%d,"iss":"%s"}' "$((NOW-60))" "$((NOW+600))" "$APP_ID" | base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n') && \
+            SIG=$(printf '%s.%s' "$HEADER" "$PAYLOAD" | openssl dgst -sha256 -sign /etc/github-app/privateKey | base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n') && \
+            JWT="$HEADER.$PAYLOAD.$SIG" && \
+            curl -s -X POST \
+              -H "Authorization: Bearer $JWT" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/app/installations/$INSTALLATION_ID/access_tokens" \
+              | grep -o '"token":"[^"]*"' | cut -d'"' -f4 > /tmp/token
+        volumeMounts:
+          - name: github-app
+            mountPath: /etc/github-app
+
     - name: clone
+      inputs:
+        parameters:
+          - name: token
       container:
         image: alpine/git:latest
         command: [sh, -c]
         args:
           - |
-            mkdir -p /root/.ssh && \
-            cp /etc/deploy-key/sshPrivateKey /root/.ssh/id_rsa && \
-            chmod 600 /root/.ssh/id_rsa && \
-            ssh-keyscan github.com >> /root/.ssh/known_hosts && \
-            git clone --depth=1 --branch {{workflow.parameters.revision}} {{workflow.parameters.repo}} /workspace/app
+            git clone --depth=1 --branch {{workflow.parameters.revision}} \
+              https://x-access-token:{{inputs.parameters.token}}@github.com/{{workflow.parameters.repo}}.git \
+              /workspace/app
         volumeMounts:
           - name: workspace
             mountPath: /workspace
-          - name: deploy-key
-            mountPath: /etc/deploy-key

@@ -14,10 +14,10 @@ spec:
       helm:
         valueFiles:
           - $values/argocd/infra/apps/argo-workflows/values.yaml
-    - repoURL: git@github.com:growcodelabs/infra.git
+    - repoURL: https://github.com/growcodelabs/infra.git
       targetRevision: main
       ref: values
-    - repoURL: git@github.com:growcodelabs/infra.git
+    - repoURL: https://github.com/growcodelabs/infra.git
       targetRevision: main
       path: manifests/infra/argo-workflows
   destination:

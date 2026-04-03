@@ -9,7 +9,7 @@ metadata:
 spec:
   description: growcodelabs infrastructure
   sourceRepos:
-    - git@github.com:growcodelabs/infra.git
+    - https://github.com/growcodelabs/*
     - https://argoproj.github.io/argo-helm
     - https://traefik.github.io/charts
     - https://charts.jetstack.io
@@ -34,7 +34,7 @@ metadata:
 spec:
   description: applications
   sourceRepos:
-    - git@github.com:growcodelabs/infra.git
+    - https://github.com/growcodelabs/*
   destinations:
     - server: https://kubernetes.default.svc
       namespace: "*"
@@ -55,7 +55,7 @@ metadata:
 spec:
   project: infra
   source:
-    repoURL: git@github.com:growcodelabs/infra.git
+    repoURL: https://github.com/growcodelabs/infra.git
     targetRevision: HEAD
     path: argocd
     directory:

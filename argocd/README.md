@@ -52,43 +52,27 @@ helm install argocd argo-cd \
 
 #### 2. Configurar credencial dos repositórios da organização
 
-O ArgoCD usa um **Credential Template** para aplicar a mesma chave SSH a todos os repositórios da organização. Qualquer repo com URL prefixada por `git@github.com:growcodelabs` utilizará automaticamente esta credencial.
+O ArgoCD usa um **Credential Template** com autenticação via **GitHub App** para acessar todos os repositórios da organização. Qualquer repo com URL prefixada por `https://github.com/growcodelabs` utilizará automaticamente esta credencial.
 
-Gerar o par de chaves SSH (sem passphrase):
-
-```bash
-ssh-keygen -t ed25519 -C "argocd@growcodelabs" -f argocd_deploy_key -N ""
-```
-
-Adicionar a chave pública como **Deploy Key** nos repositórios GitHub desejados:
-- Acesse: `GitHub → <repo> → Settings → Deploy keys → Add deploy key`
-- Título: `argocd`
-- Chave: conteúdo de `argocd_deploy_key.pub`
-- Marcar como **read-only**
-
-Garanta que este repositório tenha esta chave configurada.
-
-Criar o Secret no cluster com a chave privada:
+Criar o Secret no cluster com as credenciais da GitHub App:
 
 ```bash
 kubectl create namespace argocd
 
-kubectl create secret generic deploy-ssh-key \
+kubectl create secret generic github-app-credentials \
   --namespace argocd \
   --from-literal=type=git \
-  --from-literal=url=git@github.com:growcodelabs \
-  --from-file=sshPrivateKey=argocd_deploy_key
+  --from-literal=url=https://github.com/growcodelabs \
+  --from-literal=githubAppID=<APP_ID> \
+  --from-literal=githubAppInstallationID=<INSTALLATION_ID> \
+  --from-file=githubAppPrivateRSAKey=<path-to-private-key.pem>
 
-kubectl label secret deploy-ssh-key \
+kubectl label secret github-app-credentials \
   --namespace argocd \
   argocd.argoproj.io/secret-type=repo-creds
 ```
 
-Remover os arquivos de chave da máquina local após aplicar:
-
-```bash
-rm argocd_deploy_key argocd_deploy_key.pub
-```
+> O secret no namespace `argo` (usado pelo Argo Workflows para gerar tokens de CI) é copiado automaticamente pelo Job `copy-github-app-credentials` após o primeiro sync.
 
 #### 3. Aplicar o bootstrap
 

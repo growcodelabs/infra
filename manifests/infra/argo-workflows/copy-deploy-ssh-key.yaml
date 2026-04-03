@@ -2,38 +2,38 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: deploy-ssh-key-copier
+  name: github-app-credentials-copier
   namespace: argo
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: deploy-ssh-key-copier
+  name: github-app-credentials-copier
   namespace: argocd
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
-    resourceNames: ["deploy-ssh-key"]
+    resourceNames: ["github-app-credentials"]
     verbs: ["get"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: deploy-ssh-key-copier-reader
+  name: github-app-credentials-copier-reader
   namespace: argocd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: deploy-ssh-key-copier
+  name: github-app-credentials-copier
 subjects:
   - kind: ServiceAccount
-    name: deploy-ssh-key-copier
+    name: github-app-credentials-copier
     namespace: argo
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: deploy-ssh-key-writer
+  name: github-app-credentials-writer
   namespace: argo
 rules:
   - apiGroups: [""]
@@ -43,28 +43,28 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: deploy-ssh-key-copier-writer
+  name: github-app-credentials-copier-writer
   namespace: argo
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: deploy-ssh-key-writer
+  name: github-app-credentials-writer
 subjects:
   - kind: ServiceAccount
-    name: deploy-ssh-key-copier
+    name: github-app-credentials-copier
     namespace: argo
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: copy-deploy-ssh-key
+  name: copy-github-app-credentials
   namespace: argo
   annotations:
     argocd.argoproj.io/hook: PostSync
 spec:
   template:
     spec:
-      serviceAccountName: deploy-ssh-key-copier
+      serviceAccountName: github-app-credentials-copier
       restartPolicy: OnFailure
       containers:
         - name: copier
@@ -73,7 +73,7 @@ spec:
             - /bin/sh
             - -c
             - |
-              kubectl get secret deploy-ssh-key -n argocd -o json \
+              kubectl get secret github-app-credentials -n argocd -o json \
                 | jq '.metadata.namespace = "argo"' \
                 | jq 'del(.metadata.resourceVersion)' \
                 | jq 'del(.metadata.uid)' \
