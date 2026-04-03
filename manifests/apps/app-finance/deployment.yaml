@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-finance
+  namespace: app-finance
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-finance
+  template:
+    metadata:
+      labels:
+        app: app-finance
+    spec:
+      containers:
+        - name: app-finance
+          image: registry.digitalocean.com/growcodelabs/app-finance:5dc5b115b980284c1166d5fc001892ec8cd9e4ac
+          env:
+            - name: PORT
+              value: "3000"
+          ports:
+            - containerPort: 3000
