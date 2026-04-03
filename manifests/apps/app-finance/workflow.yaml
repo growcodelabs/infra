@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: app-finance-ci-
+  namespace: argo
+  labels:
+    app: app-finance
+spec:
+  workflowTemplateRef:
+    name: app-finance-ci
+  arguments:
+    parameters:
+      - name: repo
+        value: "git@github.com:growcodelabs/app-finance.git"
+      - name: revision
+        value: "main"

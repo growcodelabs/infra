@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: app-finance-ci
+  namespace: argo
+spec:
+  entrypoint: clone
+  arguments:
+    parameters:
+      - name: repo
+        value: "git@github.com:growcodelabs/app-finance.git"
+      - name: revision
+        value: "main"
+  volumeClaimTemplates:
+    - metadata:
+        name: workspace
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
+  volumes:
+    - name: deploy-key
+      secret:
+        secretName: deploy-ssh-key
+  templates:
+    - name: clone
+      container:
+        image: alpine/git:latest
+        command: [sh, -c]
+        args:
+          - |
+            mkdir -p /root/.ssh && \
+            cp /etc/deploy-key/ssh-privatekey /root/.ssh/id_rsa && \
+            chmod 600 /root/.ssh/id_rsa && \
+            ssh-keyscan github.com >> /root/.ssh/known_hosts && \
+            git clone --depth=1 --branch {{workflow.parameters.revision}} {{workflow.parameters.repo}} /workspace/app
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
+          - name: deploy-key
+            mountPath: /etc/deploy-key
