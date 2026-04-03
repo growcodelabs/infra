@@ -14,7 +14,7 @@ spec:
       helm:
         valueFiles:
           - $values/argocd/infra/apps/metrics-server/values.yaml
-    - repoURL: git@github.com:growcodelabs/infra.git
+    - repoURL: https://github.com/growcodelabs/infra.git.git
       targetRevision: main
       ref: values
   destination:

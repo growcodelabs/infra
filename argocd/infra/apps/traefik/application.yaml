@@ -14,10 +14,10 @@ spec:
       helm:
         valueFiles:
           - $values/argocd/infra/apps/traefik/values.yaml
-    - repoURL: git@github.com:growcodelabs/infra.git
+    - repoURL: https://github.com/growcodelabs/infra.git.git
       targetRevision: main
       ref: values
-    - repoURL: git@github.com:growcodelabs/infra.git
+    - repoURL: https://github.com/growcodelabs/infra.git.git
       targetRevision: main
       path: manifests/infra/traefik
   destination:
