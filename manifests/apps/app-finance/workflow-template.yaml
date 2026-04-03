@@ -5,6 +5,7 @@ metadata:
   namespace: argo
 spec:
   entrypoint: clone
+  serviceAccountName: argo
   arguments:
     parameters:
       - name: repo
