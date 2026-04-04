@@ -46,5 +46,20 @@ resources:
 rbac:
   enabled: true
 
-nodeSelector:
-  workload: infra
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: workload
+              operator: In
+              values:
+                - infra
+      - weight: 10
+        preference:
+          matchExpressions:
+            - key: workload
+              operator: In
+              values:
+                - apps

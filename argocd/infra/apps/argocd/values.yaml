@@ -658,6 +658,7 @@ global:
     defaultDenyIngress: false
   nodeSelector:
     kubernetes.io/os: linux
+    workload: infra
   podAnnotations: {}
   podLabels: {}
   priorityClassName: ""
