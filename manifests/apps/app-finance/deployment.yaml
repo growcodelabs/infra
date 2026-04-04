@@ -19,7 +19,7 @@ spec:
         - name: registry-growcodelabs
       containers:
         - name: app-finance
-          image: registry.digitalocean.com/growcodelabs/app-finance:5dc5b115b980284c1166d5fc001892ec8cd9e4ac
+          image: registry.digitalocean.com/growcodelabs/app-finance:13a9bcaab95cea425e1e10cc03c52b17aa576556
           envFrom:
             - secretRef:
                 name: app-finance
